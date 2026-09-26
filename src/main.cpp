@@ -1,0 +1,8 @@
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    cout << "Expense Tracker" << endl;
+    return 0;
+}
