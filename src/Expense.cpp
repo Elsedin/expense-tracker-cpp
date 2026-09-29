@@ -34,5 +34,5 @@ double Expense::getAmount() const {
 void Expense::print() const {
     cout << fixed << setprecision(2);
     cout << "[" << id << "] " << date << " | " << category << " | "
-         << description << " | $" << amount << endl;
+         << description << " | " << amount << " KM" << endl;
 }

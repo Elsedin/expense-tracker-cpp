@@ -12,7 +12,7 @@ private:
     vector<Expense> expenses;
 
 public:
-    void addExpense(const Expense& expense);
+    bool addExpense(const Expense& expense);
     bool removeExpense(int id);
     void showAll() const;
     double calculateTotal() const;

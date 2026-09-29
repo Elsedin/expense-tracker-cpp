@@ -3,8 +3,18 @@
 #include <algorithm>
 #include <iostream>
 
-void ExpenseManager::addExpense(const Expense& expense) {
+bool ExpenseManager::addExpense(const Expense& expense) {
+    bool idExists = any_of(expenses.begin(), expenses.end(),
+                           [&expense](const Expense& existing) {
+                               return existing.getId() == expense.getId();
+                           });
+
+    if (idExists) {
+        return false;
+    }
+
     expenses.push_back(expense);
+    return true;
 }
 
 bool ExpenseManager::removeExpense(int id) {
