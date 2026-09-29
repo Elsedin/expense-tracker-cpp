@@ -10,4 +10,5 @@ include_directories(include)
 add_executable(ExpenseTracker
     src/main.cpp
     src/Expense.cpp
+    src/ExpenseManager.cpp
 )
