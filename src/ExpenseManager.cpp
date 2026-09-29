@@ -59,3 +59,13 @@ vector<Expense> ExpenseManager::searchByCategory(const string& category) const {
 
     return matches;
 }
+
+map<string, double> ExpenseManager::calculateCategoryTotals() const {
+    map<string, double> totals;
+
+    for (const Expense& expense : expenses) {
+        totals[expense.getCategory()] += expense.getAmount();
+    }
+
+    return totals;
+}

@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
+#include <map>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -120,6 +121,7 @@ void showMenu() {
     cout << "3. Show all expenses" << endl;
     cout << "4. Calculate total" << endl;
     cout << "5. Search by category" << endl;
+    cout << "6. Show category statistics" << endl;
     cout << "0. Exit" << endl;
     cout << endl;
 }
@@ -168,6 +170,23 @@ void searchByCategory(const ExpenseManager& manager) {
     }
 }
 
+void showCategoryStatistics(const ExpenseManager& manager) {
+    map<string, double> totals = manager.calculateCategoryTotals();
+
+    if (totals.empty()) {
+        cout << "No expenses found." << endl;
+        return;
+    }
+
+    cout << fixed << setprecision(2);
+    cout << "===== CATEGORY STATISTICS =====" << endl;
+    for (const auto& [category, total] : totals) {
+        cout << category << ": " << total << " KM" << endl;
+    }
+    cout << "===============================" << endl;
+    cout << "Total: " << manager.calculateTotal() << " KM" << endl;
+}
+
 int main() {
     ExpenseManager manager;
     bool running = true;
@@ -197,6 +216,9 @@ int main() {
                 break;
             case 5:
                 searchByCategory(manager);
+                break;
+            case 6:
+                showCategoryStatistics(manager);
                 break;
             case 0:
                 cout << "Goodbye!" << endl;

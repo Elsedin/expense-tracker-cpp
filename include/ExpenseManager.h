@@ -1,6 +1,7 @@
 #ifndef EXPENSEMANAGER_H
 #define EXPENSEMANAGER_H
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -18,6 +19,7 @@ public:
     void showAll() const;
     double calculateTotal() const;
     vector<Expense> searchByCategory(const string& category) const;
+    map<string, double> calculateCategoryTotals() const;
 };
 
 #endif
