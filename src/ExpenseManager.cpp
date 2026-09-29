@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <iterator>
 
 bool ExpenseManager::addExpense(const Expense& expense) {
     bool idExists = any_of(expenses.begin(), expenses.end(),
@@ -48,4 +49,13 @@ double ExpenseManager::calculateTotal() const {
     }
 
     return total;
+}
+
+vector<Expense> ExpenseManager::searchByCategory(const string& category) const {
+    vector<Expense> matches;
+
+    copy_if(expenses.begin(), expenses.end(), back_inserter(matches),
+            [&category](const Expense& expense) { return expense.getCategory() == category; });
+
+    return matches;
 }

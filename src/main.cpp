@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include "Expense.h"
 #include "ExpenseManager.h"
@@ -118,6 +119,7 @@ void showMenu() {
     cout << "2. Remove expense" << endl;
     cout << "3. Show all expenses" << endl;
     cout << "4. Calculate total" << endl;
+    cout << "5. Search by category" << endl;
     cout << "0. Exit" << endl;
     cout << endl;
 }
@@ -152,6 +154,20 @@ void showTotal(const ExpenseManager& manager) {
     cout << "Total: " << manager.calculateTotal() << " KM" << endl;
 }
 
+void searchByCategory(const ExpenseManager& manager) {
+    string category = readNonEmptyLine("Enter category to search: ");
+    vector<Expense> matches = manager.searchByCategory(category);
+
+    if (matches.empty()) {
+        cout << "No expenses found for this category." << endl;
+        return;
+    }
+
+    for (const Expense& expense : matches) {
+        expense.print();
+    }
+}
+
 int main() {
     ExpenseManager manager;
     bool running = true;
@@ -178,6 +194,9 @@ int main() {
                 break;
             case 4:
                 showTotal(manager);
+                break;
+            case 5:
+                searchByCategory(manager);
                 break;
             case 0:
                 cout << "Goodbye!" << endl;
