@@ -9,6 +9,12 @@ include_directories(include)
 
 add_executable(ExpenseTracker
     src/main.cpp
+    src/DateUtils.cpp
     src/Expense.cpp
     src/ExpenseManager.cpp
+    src/FileManager.cpp
+)
+
+target_compile_definitions(ExpenseTracker PRIVATE
+    DATA_FILE_PATH="${PROJECT_SOURCE_DIR}/data/expenses.txt"
 )

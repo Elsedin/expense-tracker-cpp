@@ -20,6 +20,8 @@ public:
     double calculateTotal() const;
     vector<Expense> searchByCategory(const string& category) const;
     map<string, double> calculateCategoryTotals() const;
+    void setExpenses(const vector<Expense>& newExpenses);
+    const vector<Expense>& getExpenses() const;
 };
 
 #endif

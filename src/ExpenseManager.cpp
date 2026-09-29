@@ -69,3 +69,11 @@ map<string, double> ExpenseManager::calculateCategoryTotals() const {
 
     return totals;
 }
+
+void ExpenseManager::setExpenses(const vector<Expense>& newExpenses) {
+    expenses = newExpenses;
+}
+
+const vector<Expense>& ExpenseManager::getExpenses() const {
+    return expenses;
+}

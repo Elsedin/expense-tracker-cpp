@@ -1,4 +1,3 @@
-#include <cctype>
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
@@ -7,10 +6,18 @@
 #include <string>
 #include <vector>
 
+#include "DateUtils.h"
 #include "Expense.h"
 #include "ExpenseManager.h"
+#include "FileManager.h"
 
 using namespace std;
+
+#ifdef DATA_FILE_PATH
+const string DATA_FILE = DATA_FILE_PATH;
+#else
+const string DATA_FILE = "data/expenses.txt";
+#endif
 
 string readLine(const string& prompt) {
     cout << prompt;
@@ -61,44 +68,13 @@ string readNonEmptyLine(const string& prompt) {
     return line;
 }
 
-bool isLeapYear(int year) {
-    return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
-}
-
-int daysInMonth(int year, int month) {
-    switch (month) {
-        case 2:
-            return isLeapYear(year) ? 29 : 28;
-        case 4:
-        case 6:
-        case 9:
-        case 11:
-            return 30;
-        default:
-            return 31;
+string readTextField(const string& prompt) {
+    string text = readNonEmptyLine(prompt);
+    while (text.find('|') != string::npos) {
+        cout << "This field cannot contain the '|' character." << endl;
+        text = readNonEmptyLine(prompt);
     }
-}
-
-bool isValidDate(const string& date) {
-    if (date.size() != 10 || date[4] != '-' || date[7] != '-') {
-        return false;
-    }
-
-    for (size_t i = 0; i < date.size(); ++i) {
-        if (i != 4 && i != 7 && !isdigit(static_cast<unsigned char>(date[i]))) {
-            return false;
-        }
-    }
-
-    int year = stoi(date.substr(0, 4));
-    int month = stoi(date.substr(5, 2));
-    int day = stoi(date.substr(8, 2));
-
-    if (month < 1 || month > 12) {
-        return false;
-    }
-
-    return day >= 1 && day <= daysInMonth(year, month);
+    return text;
 }
 
 string readDate(const string& prompt) {
@@ -129,8 +105,8 @@ void showMenu() {
 void addExpense(ExpenseManager& manager) {
     int id = readInt("ID: ");
     string date = readDate("Date (YYYY-MM-DD): ");
-    string category = readNonEmptyLine("Category: ");
-    string description = readNonEmptyLine("Description: ");
+    string category = readTextField("Category: ");
+    string description = readTextField("Description: ");
     double amount = readAmount("Amount: ");
 
     while (!manager.addExpense(Expense(id, date, category, description, amount))) {
@@ -189,6 +165,9 @@ void showCategoryStatistics(const ExpenseManager& manager) {
 
 int main() {
     ExpenseManager manager;
+    FileManager fileManager;
+    manager.setExpenses(fileManager.loadExpenses(DATA_FILE));
+
     bool running = true;
 
     while (running) {
@@ -228,6 +207,10 @@ int main() {
                 cout << "Invalid option. Please try again." << endl;
                 break;
         }
+    }
+
+    if (!fileManager.saveExpenses(manager.getExpenses(), DATA_FILE)) {
+        cout << "Failed to save expenses." << endl;
     }
 
     return 0;
